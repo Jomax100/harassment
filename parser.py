@@ -1,10 +1,8 @@
 import re
 from collections import Counter, defaultdict
-import random
-from random import randint
+
 import math
-import sys
-import numpy
+
 
 
 
@@ -17,7 +15,7 @@ def parse(line):
     return words
 
 def file_2_tf_idf(file):
-    print 'converting to tf-idf'
+    print ('converting to tf-idf')
     vectors_bow = list()
     dfs = Counter()
     for line in file:
@@ -33,26 +31,27 @@ def file_2_tf_idf(file):
     for (label, bow) in vectors_bow:
         tfidf = {token: dfs[token] * count for (token, count) in bow.items()}
         vectors_tfidf.append((label, tfidf))
-    print 'converted'
+    print ('converted')
     return vectors_tfidf
 
 
 def raw2clean(filename):
     # clean lines of tweets
-    print 'cleaning'
-    file=open(filename)
+    print ('cleaning')
+    file=1 #=open(filename)
+    with open(filename, 'r', encoding='utf8', errors='ignore') as fin:
+        file=fin
     #with open(filename) as fin:
     #   file = fin.read(1888)
-
-    clean=[]#parse(line) for line in file if (line and line[0]!='#')]
-    for line in file:
-        if len(clean)>8111:
-            break
-        if (line and line[0] != '#'):
-            clean.append(parse(line))
+        clean=[]#parse(line) for line in file if (line and line[0]!='#')]
+        for line in file:
+            if len(clean)>10111:
+                break
+            if (line and line[0] != '#'):
+                clean.append(parse(line))
     #for line in clean:
     #   print line
-    print 'cleaned'
+    print ('cleaned')
     return clean
 
 def json2clean(filename):

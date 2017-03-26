@@ -1,15 +1,11 @@
 from collections import Counter, defaultdict
 import random
-from itertools import islice
-from random import randint
-import math
-import sys
-import numpy
+
 import parser
 import json
 import pickle
 
-binary=False
+binary=True
 
 
 class Data:
@@ -26,10 +22,10 @@ class Data:
         self.training_data.extend([(1, tweet) for tweet in self.clean_bad])
         self.tfidf_training = parser.file_2_tf_idf(self.training_data)
         rho = 0.01
-        maxit = 1000
+        maxit = 200
         eta = 0.04
-        T = range(len(self.tfidf_training))
-        for it in xrange(maxit):
+        T = [i for i in range(len(self.tfidf_training))]
+        for it in range(maxit):
             error=0
             random.shuffle(T)
             for t in T:
@@ -40,7 +36,7 @@ class Data:
                 if y != pred_y:
                     error+=1
                     self.update_Weights(eta*y, x,)
-            if it % 50 == 0: print it, it, it, error
+            if it % 50 == 0: print (it, it, it, error)
         #json.dump(self.weights, open("weights.txt", 'w'))
         with open('weights.txt', 'wb') as handle:
            pickle.dump(self.weights, handle)
@@ -54,7 +50,7 @@ class Data:
         #read tweets from Twitter
         test_data = self.tfidf_training #file_to_tf_idf(ftest)
         # f = open("h.out", 'w')
-        for t in xrange(len(test_data)):
+        for t in range(len(test_data)):
             id, x=test_data[t]
             pred_y = -1
             _, loss = self.dotprod(x)
